@@ -41,27 +41,31 @@ def download_video(url, quality):
 
 # الحصول على الجودات المتاحة
 def get_available_formats(url):
-    with yt_dlp.YoutubeDL() as ydl:
-        info = ydl.extract_info(url, download=False)
-        formats = info.get('formats', [])
-        available_formats = []
-        labels_seen = set()
+    try:
+        with yt_dlp.YoutubeDL() as ydl:
+            info = ydl.extract_info(url, download=False)
+            formats = info.get('formats', [])
+            available_formats = []
+            labels_seen = set()
 
-        for f in formats:
-            height = f.get('height')
-            acodec = f.get('acodec')
-            vcodec = f.get('vcodec')
+            for f in formats:
+                height = f.get('height')
+                acodec = f.get('acodec')
+                vcodec = f.get('vcodec')
 
-            if acodec != 'none' and acodec and vcodec != 'none' and vcodec and height:
-                label = f"{height}p"
-                if label not in labels_seen:
-                    available_formats.append((f.get('format_id'), label))
-                    labels_seen.add(label)
+                if acodec != 'none' and acodec and vcodec != 'none' and vcodec and height:
+                    label = f"{height}p"
+                    if label not in labels_seen:
+                        available_formats.append((f.get('format_id'), label))
+                        labels_seen.add(label)
 
-        def sort_key(item):
-            return int(item[1].replace("p", ""))
+            def sort_key(item):
+                return int(item[1].replace("p", ""))
 
-        return sorted(available_formats, key=sort_key, reverse=True)
+            return sorted(available_formats, key=sort_key, reverse=True)
+
+    except Exception as e:
+        raise Exception(f"حدث خطأ أثناء جلب الجودات: {str(e)}")
 
 # بدء المحادثة
 @router.message(CommandStart())
