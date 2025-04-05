@@ -8,14 +8,11 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Router
 from aiogram.filters import CommandStart
-from aiogram.client.default import DefaultBotProperties
 
 # قراءة التوكن من متغير البيئة
 TOKEN = os.getenv("TOKEN")
 if not TOKEN:
     raise ValueError("يرجى إضافة متغير TOKEN في إعدادات البيئة.")
-else:
-    print("تم تحميل التوكن بنجاح:", TOKEN)  # طباعة التوكن للتأكد
 
 # حذف الـ webhook الحالي
 def delete_webhook():
@@ -23,8 +20,8 @@ def delete_webhook():
     response = requests.get(url)
     print("Delete Webhook Response:", response.text)
 
-# إعداد البوت
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+# إعداد البوت بدون استخدام DefaultBotProperties
+bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher(storage=MemoryStorage())
 router = Router()
 dp.include_router(router)
