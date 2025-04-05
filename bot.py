@@ -14,6 +14,8 @@ from aiogram.client.default import DefaultBotProperties
 TOKEN = os.getenv("TOKEN")
 if not TOKEN:
     raise ValueError("يرجى إضافة متغير TOKEN في إعدادات البيئة.")
+else:
+    print("تم تحميل التوكن بنجاح:", TOKEN)  # طباعة التوكن للتأكد
 
 # حذف الـ webhook الحالي
 def delete_webhook():
